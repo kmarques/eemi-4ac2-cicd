@@ -23,13 +23,13 @@ jobs:
         run: ls
 
   hello2:
-    runs-on: "ubuntu-lastest"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Coucou"
         run: "echo Coucou"
 
   hello3:
-    runs-on: "ubuntu-latests"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Prerequisites"
         run: |
