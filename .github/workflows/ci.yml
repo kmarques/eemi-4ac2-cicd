@@ -21,3 +21,9 @@ jobs:
           echo "You"
       - name: "List directory"
         run: ls
+
+  hello2:
+    runs-on: "ubuntu-lastest"
+    steps:
+      - name: "Coucou"
+        run: "echo Coucou"
