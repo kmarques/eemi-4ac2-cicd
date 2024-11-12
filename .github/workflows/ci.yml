@@ -13,3 +13,12 @@ jobs:
       - name: "Checkout Repository"
         uses: actions/checkout@v4
       - run: ls
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.31.1
+        with:
+          php-version: 8.1
+          tools: composer
+      - name: "Install composer deps"
+        run: |
+          export APP_ENV=test
+          composer install --prefer-dist --no-interaction --no-progress
