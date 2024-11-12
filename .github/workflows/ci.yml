@@ -3,6 +3,7 @@ name: "CI"
 on:
   push:
     paths: ~
+  workflow_dispatch: ~
 
 jobs:
   hello:
@@ -13,6 +14,7 @@ jobs:
       - name: "Multiple Lines"
         run: |
           echo "Say"
+          exit 1
           echo "Hello"
           echo "To"
           echo "You"
