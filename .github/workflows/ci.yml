@@ -15,6 +15,8 @@ jobs:
         uses: php-actions/composer@v6
         with:
           php_version: 8.1
+      - name: "Generate cs config"
+        run: cp phpcs.xml.dist phpcs.xml
       - name: PHP Code Sniffer
         uses: php-actions/phpcs@v1
         with:
