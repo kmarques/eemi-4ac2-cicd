@@ -76,5 +76,5 @@ jobs:
       - name: "Start PHPUnit"
         run: |
           wget -O phpunit.phar https://phar.phpunit.de/phpunit-10.phar
-          chmod +x phpunit-10.phar
-          ./phpunit-10.phar
+          chmod +x phpunit.phar
+          ./phpunit.phar
