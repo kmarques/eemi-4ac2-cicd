@@ -37,6 +37,6 @@ jobs:
           env
           php bin/console d:m:m
         env:
-          DATABASE_HOST: localhost
+          DATABASE_HOST: 127.0.0.1
           DATABASE_NAME: app
           DATABASE_PASSWORD: password
