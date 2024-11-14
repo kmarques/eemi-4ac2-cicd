@@ -6,7 +6,22 @@ on:
   workflow_dispatch: ~
 
 jobs:
+  linter:
+    name: "Lint code"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Composer install
+        uses: php-actions/composer@v6
+      - name: PHP Code Sniffer
+        uses: php-actions/phpcs@v1
+        with:
+          php_version: 8.1
+          path: src/
+          standard: phpcs.xml
+
   deps:
+    needs: ["linter"]
     name: "Install depedencies"
     runs-on: "ubuntu-latest"
     services:
