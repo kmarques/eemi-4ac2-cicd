@@ -12,8 +12,6 @@
 
 	<rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
 
-	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
-
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
 		<properties>
 		<property name="indent" value="2"/>
