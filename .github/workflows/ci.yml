@@ -32,7 +32,9 @@ jobs:
           export APP_ENV=test
           composer install --prefer-dist --no-interaction --no-progress
       - name: "Run migrations"
-        run: php bin/console d:m:m
+        run: |
+          env
+          php bin/console d:m:m
         env:
           DATABASE_HOST: localhost
           DATABASE_NAME: app
