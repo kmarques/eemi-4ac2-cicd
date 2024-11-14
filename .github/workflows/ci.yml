@@ -70,3 +70,5 @@ jobs:
           php -S 127.0.0.1:8080 -t public &
           sleep 2
           nc -zv localhost 8080
+      - name: "Start PHPUnit"
+        uses: php-actions/phpunit@v3
