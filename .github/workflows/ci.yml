@@ -23,6 +23,12 @@ jobs:
           php_version: 8.1
           path: src/
           standard: phpcs.xml
+      - name: "PHPStan"
+        uses: php-actions/phpstan@v3
+        with:
+          path: src/
+          php_version: 8.1
+          level: 9
 
   deps:
     needs: ["linter"]
