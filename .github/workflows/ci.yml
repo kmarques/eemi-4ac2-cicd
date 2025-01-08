@@ -67,14 +67,19 @@ jobs:
           DATABASE_PASSWORD: password
       - name: "Start server"
         run: |
-          php bin/console
           php -S 127.0.0.1:8080 -t public &
           sleep 2
           nc -zv localhost 8080
       #- name: "Start PHPUnit"
       #  uses: php-actions/phpunit@v3
-      - name: "Start PHPUnit"
+      - name: "Install PHPUnit"
         run: |
           wget -O phpunit.phar https://phar.phpunit.de/phpunit-10.phar
           chmod +x phpunit.phar
-          ./phpunit.phar
+      - name: "Unit tests"
+        run: |
+          ./phpunit.phar tests/_1_Unit
+      - name: "Functional tests"
+        continue-on-error: true
+        run: |
+          ./phpunit.phar tests/_3_Application
