@@ -23,9 +23,17 @@ jobs:
           path: vendor
           key: composer-${{ hashFiles('**/composer.lock') }}
       - name: "Install composer deps"
+        env:
+          MAILER_SENDER_EMAIL_ENV: ${{ vars.MAILER_SENDER_EMAIL }}
         run: |
           export APP_ENV=test
           composer install --prefer-dist --no-interaction --no-progress
+          echo MAILER_SENDER_EMAIL ${{ vars.MAILER_SENDER_EMAIL }}
+          echo SYMFONY_ENV ${{ vars.SYMFONY_ENV }}
+          echo MAILER_API_KEY ${{ secrets.MAILER_API_KEY }}
+          echo "${{ vars.SYMFONY_ENV }}" >> .env.test.local
+          echo "${{ secrets.MAILER_API_KEY }}" >> .env.test.local
+          env | grep MAILER_SENDER_EMAIL_ENV
 
   linter:
     needs: ["deps"]
