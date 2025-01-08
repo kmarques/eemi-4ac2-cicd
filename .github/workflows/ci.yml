@@ -78,8 +78,8 @@ jobs:
           chmod +x phpunit.phar
       - name: "Unit tests"
         run: |
-          ./phpunit.phar tests/_1_Unit
+          php bin/phpunit tests/_1_Unit
       - name: "Functional tests"
         continue-on-error: true
         run: |
-          ./phpunit.phar tests/_3_Application
+          php bin/phpunit tests/_3_Application
