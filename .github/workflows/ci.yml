@@ -6,15 +6,38 @@ on:
   workflow_dispatch: ~
 
 jobs:
+  deps:
+    name: "Install depedencies"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.31.1
+        with:
+          php-version: 8.1
+          tools: composer
+      - name: "Cache vendor"
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('**/composer.lock') }}
+      - name: "Install composer deps"
+        run: |
+          export APP_ENV=test
+          composer install --prefer-dist --no-interaction --no-progress
+
   linter:
+    needs: ["deps"]
     name: "Lint code"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
-      - name: Composer install
-        uses: php-actions/composer@v6
+      - name: "Restore vendor"
+        uses: actions/cache/restore@v4
         with:
-          php_version: 8.1
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          path: vendor
       - name: "Generate cs config"
         run: cp phpcs.xml.dist phpcs.xml
       - name: PHP Code Sniffer
@@ -31,7 +54,7 @@ jobs:
           php_version: 8.1
           level: 9
 
-  deps:
+  tests:
     needs: ["linter"]
     name: "Install depedencies"
     runs-on: "ubuntu-latest"
@@ -47,17 +70,13 @@ jobs:
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4
-      - name: Setup PHP Action
-        uses: shivammathur/setup-php@2.31.1
+      - name: "Restore vendor"
+        uses: actions/cache/restore@v4
         with:
-          php-version: 8.1
-          tools: composer
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          path: vendor
       - name: "Check database healthy"
         run: nc -zv localhost 3306
-      - name: "Install composer deps"
-        run: |
-          export APP_ENV=test
-          composer install --prefer-dist --no-interaction --no-progress
       - name: "Run migrations"
         run: |
           php bin/console d:m:m
