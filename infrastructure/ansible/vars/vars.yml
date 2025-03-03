@@ -1,0 +1,4 @@
+IS_DOCKER: true
+project_name: "my_project"
+document_root: "{{ project_name }}"
+hostname: "{{ project_name }}.local"

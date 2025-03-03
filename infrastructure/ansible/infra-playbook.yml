@@ -1,0 +1,47 @@
+- name: "Install Infra"
+  hosts: all
+
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - name: "Hello world"
+      ansible.builtin.debug:
+        msg: "Hello world"
+
+    - name: "Update apt cache"
+      ansible.builtin.apt:
+        update_cache: true
+    - name: "Install NGINX"
+      ansible.builtin.apt:
+        name:
+          - nginx
+        state: present
+    - name: "Start NGINX (outside docker)"
+      when: not IS_DOCKER
+      ansible.builtin.service:
+        name: nginx
+        state: started
+    - name: "Start NGINX (inside docker)"
+      when: IS_DOCKER
+      ansible.builtin.command:
+        cmd: nginx
+      register: nginx_start
+      changed_when: nginx_start.rc == 0
+      failed_when: "nginx_start.rc != 0 and 'Address already in use' not in nginx_start.stderr"
+    - name: "Generate NGINX vhost"
+      ansible.builtin.template:
+        src: nginx-vhost.j2
+        dest: "/etc/nginx/sites-available/default"
+        mode: 644
+    - name: "Reload NGINX (outside docker)"
+      when: not IS_DOCKER
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+    - name: "Reload NGINX (inside docker)"
+      when: IS_DOCKER
+      ansible.builtin.command:
+        cmd: nginx -s reload
+      register: nginx_start
+    -
