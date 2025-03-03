@@ -1,0 +1,13 @@
+---
+- name: "Start PHP-FPM (inside docker)"
+  when: IS_DOCKER
+  ansible.builtin.command:
+    cmd: php-fpm8.3 -D
+  register: php_fpm_start
+  changed_when: php_fpm_start.rc == 0
+  failed_when: php_fpm_start.rc != 70 and php_fpm_start.rc != 0
+- name: "Start PHP-FPM (outside docker)"
+  when: not IS_DOCKER
+  ansible.builtin.service:
+    name: php-fpm8.3
+    state: restarted

@@ -1,0 +1,20 @@
+---
+- name: "Update apt cache"
+  ansible.builtin.apt:
+    update_cache: true
+- name: "Install NGINX"
+  ansible.builtin.apt:
+    name:
+      - nginx
+    state: present
+  notify:
+    - "Start NGINX (inside docker)"
+    - "Start NGINX (outside docker)"
+- name: "Generate NGINX vhost"
+  ansible.builtin.template:
+    src: nginx-vhost.j2
+    dest: "/etc/nginx/sites-available/default"
+    mode: 644
+  notify:
+    - "Reload NGINX (inside docker)"
+    - "Reload NGINX (outside docker)"

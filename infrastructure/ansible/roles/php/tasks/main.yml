@@ -1,0 +1,16 @@
+---
+- name: "Install PHP and extensions"
+  ansible.builtin.apt:
+    name:
+      - php
+      - php-fpm
+      - php-mysql
+    state: present
+- name: "Generate PHP-FPM pool config"
+  ansible.builtin.template:
+    src: php-fpm-pool.j2
+    dest: "/etc/php/8.3/fpm/pool.d/www.conf"
+    mode: 644
+  notify:
+    - "Start PHP-FPM (inside docker)"
+    - "Start PHP-FPM (outside docker)"
